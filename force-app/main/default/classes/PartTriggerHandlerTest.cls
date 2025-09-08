@@ -4,7 +4,7 @@ public class PartTriggerHandlerTest {
     @isTest
     static void testValidPart() {
         // A valid part with Product__c filled
-        Part__c p = new Part__c(
+        SQX_Part__c p = new SQX_Part__c(
             Name = 'Test Part',
             Active__c = true,
             Product__c = 'Sample Product',
@@ -17,7 +17,7 @@ public class PartTriggerHandlerTest {
     @isTest
     static void testPartWithoutProduct_ShouldFail() {
         // A part missing Product__c
-        Part__c p = new Part__c(
+        SQX_Part__c p = new SQX_Part__c(
             Name = 'Bad Part',
             Active__c = true
         );
@@ -32,7 +32,7 @@ public class PartTriggerHandlerTest {
     @isTest
     static void testPartWithNegativeNumber_ShouldFail() {
         // A part with negative Part Number
-        Part__c p = new Part__c(
+        SQX_Part__c p = new SQX_Part__c(
             Name = 'Negative Part',
             Part_Number__c = -5,
             Product__c = 'Invalid Product'

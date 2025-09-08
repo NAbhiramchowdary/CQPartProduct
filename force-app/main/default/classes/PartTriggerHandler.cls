@@ -1,6 +1,6 @@
 public with sharing class PartTriggerHandler {
-    public static void validateParts(List<Part__c> newParts) {
-        for (Part__c part : newParts) {
+    public static void validateParts(List<SQX_Part__c> newParts) {
+        for (SQX_Part__c part : newParts) {
             // Example validation: Product__c field cannot be blank
             if (String.isBlank(part.Product__c)) {
                 part.addError('Product field cannot be blank.');
