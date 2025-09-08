@@ -20,6 +20,12 @@
         <name>ApexClass</name>
     </types>
 
+    <!-- Apex Trigger -->
+    <types>
+        <members>PartTrigger</members>
+        <name>ApexTrigger</name>
+    </types>
+
     <!-- API Version -->
     <version>64.0</version>
 </Package>
