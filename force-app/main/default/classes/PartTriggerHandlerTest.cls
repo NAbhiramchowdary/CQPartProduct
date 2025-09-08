@@ -3,12 +3,11 @@ public class PartTriggerHandlerTest {
     
     @isTest
     static void testValidPart() {
-        // A valid part with Product__c filled
         SQX_Part__c p = new SQX_Part__c(
             Name = 'Test Part',
             Active__c = true,
             Product__c = 'Sample Product',
-            Part_Number__c = 10
+            Part_Number__c = '10' // as string
         );
         insert p;
         System.assertEquals('Sample Product', p.Product__c);
@@ -16,7 +15,6 @@ public class PartTriggerHandlerTest {
 
     @isTest
     static void testPartWithoutProduct_ShouldFail() {
-        // A part missing Product__c
         SQX_Part__c p = new SQX_Part__c(
             Name = 'Bad Part',
             Active__c = true
@@ -31,10 +29,9 @@ public class PartTriggerHandlerTest {
 
     @isTest
     static void testPartWithNegativeNumber_ShouldFail() {
-        // A part with negative Part Number
         SQX_Part__c p = new SQX_Part__c(
             Name = 'Negative Part',
-            Part_Number__c = -5,
+            Part_Number__c = '-5', // as string
             Product__c = 'Invalid Product'
         );
         try {
@@ -44,4 +41,13 @@ public class PartTriggerHandlerTest {
             System.assert(e.getMessage().contains('Part Number cannot be negative.'));
         }
     }
-}
+
+    @isTest
+    static void testPartWithNonNumericPartNumber_ShouldFail() {
+        SQX_Part__c p = new SQX_Part__c(
+            Name = 'Alpha Part',
+            Part_Number__c = 'ABC123', // invalid text
+            Product__c = 'Invalid Product'
+        );
+        try {
+            insert p;
