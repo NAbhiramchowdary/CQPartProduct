@@ -2,7 +2,7 @@
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>Active__c</fullName>
     <defaultValue>false</defaultValue>
-    <description>Maybe its not working</description>
+    <description>you can directly change in this org so the VScode gone retieve and deploy in the GIThub</description>
     <label>Active</label>
     <trackTrending>false</trackTrending>
     <type>Checkbox</type>
