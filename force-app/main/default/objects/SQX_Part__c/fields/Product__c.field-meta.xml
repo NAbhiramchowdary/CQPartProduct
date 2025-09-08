@@ -2,6 +2,7 @@
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>Product__c</fullName>
     <deleteConstraint>SetNull</deleteConstraint>
+    <description>just checking if is working or not</description>
     <label>Product</label>
     <referenceTo>Product2</referenceTo>
     <relationshipLabel>Part</relationshipLabel>
