@@ -51,3 +51,9 @@ public class PartTriggerHandlerTest {
         );
         try {
             insert p;
+            System.assert(false, 'Expected error when Part Number is not numeric');
+        } catch (DmlException e) {
+            System.assert(e.getMessage().contains('Part Number must be numeric.'));
+        }
+    }
+}
