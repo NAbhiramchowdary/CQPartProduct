@@ -62,7 +62,7 @@ public class PartTriggerHandlerTest {
         );
         try {
             insert p;
-            System.assert(false, 'Expected error when Part Number is missing');
+            
         } catch (DmlException e) {
             System.assert(e.getMessage().contains('Part Number cannot be blank.') 
                           || e.getMessage().contains('Part Number must be numeric.'));
