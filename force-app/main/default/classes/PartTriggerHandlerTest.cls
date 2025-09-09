@@ -10,7 +10,7 @@ public class PartTriggerHandlerTest {
             Name = 'Test Part',
             Active__c = true,
             Product__c = prod.Id,
-            Part_Number__c = 10   // ✅ Correct: number, no quotes
+            Part_Number__c = '10'   // ✅ String now
         );
         insert p;
 
@@ -22,7 +22,7 @@ public class PartTriggerHandlerTest {
         SQX_Part__c p = new SQX_Part__c(
             Name = 'Bad Part',
             Active__c = true,
-            Part_Number__c = 5    // ✅ Number, no quotes
+            Part_Number__c = '5'    // ✅ String now
         );
         try {
             insert p;
@@ -39,7 +39,7 @@ public class PartTriggerHandlerTest {
 
         SQX_Part__c p = new SQX_Part__c(
             Name = 'Negative Part',
-            Part_Number__c = -5,   // ✅ Correct: number, no quotes
+            Part_Number__c = '-5',   // ✅ String now
             Product__c = prod.Id
         );
         try {
@@ -58,7 +58,7 @@ public class PartTriggerHandlerTest {
         SQX_Part__c p = new SQX_Part__c(
             Name = 'No Number Part',
             Product__c = prod.Id
-            // ✅ No Part_Number__c assigned, to simulate missing value
+            // ✅ No Part_Number__c assigned, simulating missing value
         );
         try {
             insert p;
