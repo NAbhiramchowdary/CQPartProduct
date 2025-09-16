@@ -6,7 +6,7 @@ public class PartProductUpdatorBatch implements Database.Batchable<sObject>, Sch
     public Database.QueryLocator start(Database.BatchableContext bc){
         try{
             String query = 'SELECT ID, Name, Product__c, Part_Number__c FROM SQX_Part__c ' +
-                'WHERE Product__c = null AND Part_Number__c != null AND Name != null AND Id = \'a00aj00001IWQL7AAP\'';
+                'WHERE Product__c = null AND Part_Number__c != null AND Name != null';
             return Database.getQueryLocator(query);
         }
         catch(Exception exp){
