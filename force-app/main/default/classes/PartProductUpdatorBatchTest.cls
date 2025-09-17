@@ -3,13 +3,14 @@ private class PartProductUpdatorBatchTest {
     
     @testSetup
     static void setupData() {
+        // Create one product and two parts (one matches product, one doesn’t)
         List<Product2> products = new List<Product2>{
             new Product2(Name = 'PartA', ProductCode = 'P1001', IsActive = true)
         };
         
         List<SQX_Part__c> parts = new List<SQX_Part__c>{
-            new SQX_Part__c(Name = 'PartA', Part_Number__c = 'P1001'),
-            new SQX_Part__c(Name = 'PartB', Part_Number__c = 'P2002')
+            new SQX_Part__c(Name = 'PartA', Part_Number__c = 'P1001'), // matches product
+            new SQX_Part__c(Name = 'PartB', Part_Number__c = 'P2002')  // no product yet
         };
         
         insert products;
@@ -17,10 +18,12 @@ private class PartProductUpdatorBatchTest {
     }
 
     static testMethod void testExistingProductLink_SystemAdmin() {
+        // Run batch as System Admin (default test user)
         Test.startTest();
         Database.executeBatch(new PartProductUpdatorBatch(), 200);
         Test.stopTest();
         
+        // Check if PartA is linked to existing Product
         Product2 prodA = [SELECT Id FROM Product2 WHERE Name = 'PartA' LIMIT 1];
         SQX_Part__c partA = [SELECT Name, Product__c FROM SQX_Part__c WHERE Name = 'PartA' LIMIT 1];
 
@@ -28,6 +31,7 @@ private class PartProductUpdatorBatchTest {
     }
 
     static testMethod void testUnauthorizedUserBlocked() {
+        // Create a Standard User without permission set
         Profile stdProfile = [SELECT Id FROM Profile WHERE Name = 'Standard User' LIMIT 1];
 
         User stdUser = new User(
@@ -43,20 +47,22 @@ private class PartProductUpdatorBatchTest {
         );
         insert stdUser;
 
+        // Try scheduling as unauthorized user
         Test.startTest();
         System.runAs(stdUser) {
             try {
                 String cronExp = '0 0 6 * * ?';
                 System.schedule('testPartUpdatorBatch',cronExp , new PartProductUpdatorBatch());
             } catch (Exception e) {
+                // Expect error: no access
                 System.assertEquals(e.getMessage(), 'Access Denied: Current user does not have required permissions.');
             }
-            
         }
         Test.stopTest();
     }
 
     static testMethod void testCQProductAdminUserAccess() {
+        // Create Standard User and assign CQ_Product_Admin permission set
         Profile stdProfile = [SELECT Id FROM Profile WHERE Name = 'Standard User' LIMIT 1];
         PermissionSet cqPerm = [SELECT Id FROM PermissionSet WHERE Name = 'CQ_Product_Admin' LIMIT 1];
         
@@ -78,10 +84,13 @@ private class PartProductUpdatorBatchTest {
             PermissionSetId = cqPerm.Id
         );
 
+        // Run schedulable job as user with required permission
         Test.startTest();
         System.runAs(psUser) {
             String cronExp = '0 0 6 * * ?';
             String jobID = System.schedule('testPartUpdatorBatch',cronExp , new PartProductUpdatorBatch());
+            
+            // Confirm job is scheduled
             CronTrigger ct = [SELECT CronJobDetail.Name, TimesTriggered, NextFireTime FROM CronTrigger WHERE Id = :jobID];
             System.assertEquals('testPartUpdatorBatch', ct.CronJobDetail.Name);
         }
